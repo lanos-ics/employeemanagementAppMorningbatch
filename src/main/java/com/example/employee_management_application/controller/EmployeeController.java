@@ -3,10 +3,7 @@ package com.example.employee_management_application.controller;
 import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +22,13 @@ public class EmployeeController {
     {
       List<Employee> employees =  employeeService.getEmployees();
       return employees;
+    }
+
+    @GetMapping("api/v1/employees/{empId}")
+    public Employee getEmployeeById(@PathVariable Long empId)
+    {
+       Employee emp =  employeeService.getEmployeeById(empId);
+       return emp;
     }
 
     // add/create employee :

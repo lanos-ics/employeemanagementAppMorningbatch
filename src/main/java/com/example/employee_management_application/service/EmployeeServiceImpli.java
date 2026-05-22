@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpli implements EmployeeService{
@@ -19,6 +20,18 @@ public class EmployeeServiceImpli implements EmployeeService{
     public List<Employee> getEmployees() {
        List<Employee> employees =  employeeRepo.findAll();
         return  employees;
+    }
+
+    @Override
+    public Employee getEmployeeById(Long employeeId) {
+
+       Optional<Employee> emp =  employeeRepo.findById(employeeId);
+       if(emp.isEmpty())
+       {
+           throw new RuntimeException("Employee does not exists with is " + employeeId + " .");
+       }
+       Employee realEmployee = emp.get();
+        return realEmployee;
     }
 
     @Override

@@ -9,6 +9,9 @@ public interface EmployeeService {
     // get all employees method :
     public List<Employee> getEmployees();
 
+    // get 1 employee :
+    public Employee getEmployeeById(Long employeeId);
+
     // add new employee to database :
     public String addEmployee(Employee employee);
 
