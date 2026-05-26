@@ -12,7 +12,15 @@ public interface EmployeeService {
     // get 1 employee :
     public Employee getEmployeeById(Long employeeId);
 
+    public Employee getEmployeeByName(String employeeName);
+
+    public Employee getEmployeeByEmail(String email);
+
     // add new employee to database :
     public String addEmployee(Employee employee);
+
+    public Employee deleteEmployeeById(Long empId);
+
+    public Employee updateEmployeeById(Long empId, Employee newEmployee);
 
 }

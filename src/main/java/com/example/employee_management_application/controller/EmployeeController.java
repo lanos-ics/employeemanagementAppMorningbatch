@@ -4,7 +4,6 @@ import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class EmployeeController {
 
     // get employees :
 
-    @GetMapping("api/v1/employees")
+    @GetMapping("api/v1/employee")
     public List<Employee> getEmployees()
     {
       List<Employee> employees =  employeeService.getEmployees();
@@ -31,12 +30,39 @@ public class EmployeeController {
        return emp;
     }
 
+    @GetMapping("api/v1/emp/")
+    public Employee getEmployeeByName(@RequestParam(name = "en") String empName)
+    {
+        Employee emp =  employeeService.getEmployeeByName(empName);
+        return emp;
+    }
+
+    @GetMapping("/api/v1/employees/")
+    public Employee getEmployeeByEmail(@RequestParam(name = "em") String empEmail){
+
+        Employee e = employeeService.getEmployeeByEmail(empEmail);
+        return e;
+    }
     // add/create employee :
-    @PostMapping("api/v1/employee")
+    @PostMapping("api/v1/employees")
     public String addEmployee(@RequestBody Employee employee )
     {
         String message = employeeService.addEmployee(employee);
         return message;
     }
+
+    @DeleteMapping("api/v1/admin/employees/{empId}")
+    public Employee deleteEmployeeById(@PathVariable Long empId)
+    {
+       Employee emp =  employeeService.deleteEmployeeById(empId);
+       return emp;
+    }
+    @PutMapping("api/v1/admin/employees/{empId}")
+    public Employee deleteEmployeeById(@PathVariable Long empId, @RequestBody Employee employee)
+    {
+       Employee emp =  employeeService.updateEmployeeById(empId, employee);
+       return emp;
+    }
+
 
 }

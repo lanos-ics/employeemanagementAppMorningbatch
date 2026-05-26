@@ -35,8 +35,60 @@ public class EmployeeServiceImpli implements EmployeeService{
     }
 
     @Override
+    public Employee getEmployeeByName(String employeeName) {
+       Employee emp = employeeRepo.findByEmployeeName(employeeName);
+       return emp;
+    }
+
+    @Override
+    public Employee getEmployeeByEmail(String email) {
+        Employee emp = employeeRepo.findByEmail(email);
+        return emp;
+    }
+
+    @Override
     public String addEmployee(Employee employee) {
         employeeRepo.save(employee);
         return "Employee added successfully!";
+    }
+
+    @Override
+    public Employee deleteEmployeeById(Long empId) {
+
+        Optional<Employee> emp = employeeRepo.findById(empId);
+        if(emp.isEmpty())
+        {
+            throw new RuntimeException("Employee does not exists.");
+        }
+
+        employeeRepo.deleteById(empId);
+
+        Employee empToReturn = emp.get();
+
+        return empToReturn;
+    }
+
+    @Override
+    public Employee updateEmployeeById(Long empId,  Employee newEmployee) {
+        Optional<Employee> oldEmpData = employeeRepo.findById(empId);
+        if(oldEmpData.isEmpty())
+        {
+            throw new RuntimeException("Employee does not exists.");
+        }
+
+        Employee existingEmployee = oldEmpData.get();
+        existingEmployee.setEmployeeName(newEmployee.getEmployeeName());
+        existingEmployee.setAddress(newEmployee.getAddress());
+        existingEmployee.setEmail(newEmployee.getEmail());
+        existingEmployee.setSalary(newEmployee.getSalary());
+        existingEmployee.setAdharNumber(newEmployee.getAdharNumber());
+        existingEmployee.setMobileNumber(newEmployee.getMobileNumber());
+        existingEmployee.setPanNumber(newEmployee.getPanNumber());
+
+        employeeRepo.save(existingEmployee);
+
+
+
+        return existingEmployee;
     }
 }
