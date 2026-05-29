@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Employee {
@@ -12,12 +15,19 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "employee name can not be empty.")
     private String employeeName;
+
     private int salary;
+
+    @NotBlank
+    @Size(min = 10, max = 10)
     private String mobileNumber;
     private String adharNumber;
     private String panNumber;
     private String address;
+
+    @Email
     private String email;
 
     public Long getId() {

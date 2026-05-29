@@ -1,7 +1,7 @@
 package com.example.employee_management_application.controller;
-
 import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class EmployeeController {
     }
     // add/create employee :
     @PostMapping("api/v1/employees")
-    public String addEmployee(@RequestBody Employee employee )
+    public String addEmployee( @Valid @RequestBody Employee employee )
     {
         String message = employeeService.addEmployee(employee);
         return message;
