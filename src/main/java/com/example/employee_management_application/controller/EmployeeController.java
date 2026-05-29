@@ -3,6 +3,8 @@ import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,51 +19,51 @@ public class EmployeeController {
     // get employees :
 
     @GetMapping("api/v1/employee")
-    public List<Employee> getEmployees()
+    public ResponseEntity<List<Employee>> getEmployees()
     {
       List<Employee> employees =  employeeService.getEmployees();
-      return employees;
+      return ResponseEntity.status(HttpStatus.OK).body(employees);
     }
 
     @GetMapping("api/v1/employees/{empId}")
-    public Employee getEmployeeById(@PathVariable Long empId)
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long empId)
     {
        Employee emp =  employeeService.getEmployeeById(empId);
-       return emp;
+       return ResponseEntity.status(HttpStatus.OK).body(emp);
     }
 
     @GetMapping("api/v1/emp/")
-    public Employee getEmployeeByName(@RequestParam(name = "en") String empName)
+    public ResponseEntity<Employee> getEmployeeByName(@RequestParam(name = "en") String empName)
     {
         Employee emp =  employeeService.getEmployeeByName(empName);
-        return emp;
+        return ResponseEntity.status(HttpStatus.OK).body(emp);
     }
 
     @GetMapping("/api/v1/employees/")
-    public Employee getEmployeeByEmail(@RequestParam(name = "em") String empEmail){
+    public ResponseEntity<Employee> getEmployeeByEmail(@RequestParam(name = "em") String empEmail){
 
         Employee e = employeeService.getEmployeeByEmail(empEmail);
-        return e;
+        return ResponseEntity.status(HttpStatus.OK).body(e);
     }
     // add/create employee :
     @PostMapping("api/v1/employees")
-    public String addEmployee( @Valid @RequestBody Employee employee )
+    public ResponseEntity<String> addEmployee( @Valid @RequestBody Employee employee )
     {
         String message = employeeService.addEmployee(employee);
-        return message;
+        return ResponseEntity.status(HttpStatus.CREATED).body(message);
     }
 
     @DeleteMapping("api/v1/admin/employees/{empId}")
-    public Employee deleteEmployeeById(@PathVariable Long empId)
+    public ResponseEntity<Employee> deleteEmployeeById(@PathVariable Long empId)
     {
        Employee emp =  employeeService.deleteEmployeeById(empId);
-       return emp;
+       return ResponseEntity.status(HttpStatus.OK).body(emp);
     }
     @PutMapping("api/v1/admin/employees/{empId}")
-    public Employee deleteEmployeeById(@PathVariable Long empId, @RequestBody Employee employee)
+    public ResponseEntity<Employee> deleteEmployeeById(@PathVariable Long empId, @RequestBody Employee employee)
     {
        Employee emp =  employeeService.updateEmployeeById(empId, employee);
-       return emp;
+       return ResponseEntity.ok().body(emp);
     }
 
 
