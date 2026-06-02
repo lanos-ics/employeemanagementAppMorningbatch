@@ -1,5 +1,6 @@
 package com.example.employee_management_application.service;
 
+import com.example.employee_management_application.exception.EmployeeNotFoundException;
 import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.repo.EmployeeRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class EmployeeServiceImpli implements EmployeeService{
        Optional<Employee> emp =  employeeRepo.findById(employeeId);
        if(emp.isEmpty())
        {
-           throw new RuntimeException("Employee does not exists with is " + employeeId + " .");
+           throw new EmployeeNotFoundException("Employee Not Found with ID"+ employeeId);
        }
        Employee realEmployee = emp.get();
         return realEmployee;
@@ -58,7 +59,7 @@ public class EmployeeServiceImpli implements EmployeeService{
         Optional<Employee> emp = employeeRepo.findById(empId);
         if(emp.isEmpty())
         {
-            throw new RuntimeException("Employee does not exists.");
+            throw new EmployeeNotFoundException("Employe does not exists to delete by id:"+empId);
         }
 
         employeeRepo.deleteById(empId);
@@ -73,7 +74,7 @@ public class EmployeeServiceImpli implements EmployeeService{
         Optional<Employee> oldEmpData = employeeRepo.findById(empId);
         if(oldEmpData.isEmpty())
         {
-            throw new RuntimeException("Employee does not exists.");
+            throw new EmployeeNotFoundException("Employee not found to update by id : "+ empId);
         }
 
         Employee existingEmployee = oldEmpData.get();
