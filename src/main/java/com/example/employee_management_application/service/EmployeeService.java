@@ -1,5 +1,7 @@
 package com.example.employee_management_application.service;
 
+import com.example.employee_management_application.dto.EmployeeDTO;
+import com.example.employee_management_application.dto.EmployeeResponseDTO;
 import com.example.employee_management_application.models.Employee;
 
 import java.util.List;
@@ -7,20 +9,20 @@ import java.util.List;
 public interface EmployeeService {
 
     // get all employees method :
-    public List<Employee> getEmployees();
+    public EmployeeResponseDTO getEmployees();
 
     // get 1 employee :
-    public Employee getEmployeeById(Long employeeId);
+    public EmployeeDTO getEmployeeById(Long employeeId);
 
-    public Employee getEmployeeByName(String employeeName);
+    public EmployeeDTO getEmployeeByName(String employeeName);
 
-    public Employee getEmployeeByEmail(String email);
+    public EmployeeDTO getEmployeeByEmail(String email);
 
     // add new employee to database :
-    public String addEmployee(Employee employee);
+    public String addEmployee(EmployeeDTO employee);
 
-    public Employee deleteEmployeeById(Long empId);
+    public EmployeeDTO deleteEmployeeById(Long empId);
 
-    public Employee updateEmployeeById(Long empId, Employee newEmployee);
+    public EmployeeDTO updateEmployeeById(Long empId, EmployeeDTO newEmployee);
 
 }
