@@ -19,7 +19,7 @@ public interface EmployeeService {
     public EmployeeDTO getEmployeeByEmail(String email);
 
     // add new employee to database :
-    public String addEmployee(EmployeeDTO employee);
+    public EmployeeDTO addEmployee(EmployeeDTO employee);
 
     public EmployeeDTO deleteEmployeeById(Long empId);
 

@@ -1,8 +1,11 @@
 package com.example.employee_management_application.service;
 
+import com.example.employee_management_application.dto.EmployeeDTO;
+import com.example.employee_management_application.dto.EmployeeResponseDTO;
 import com.example.employee_management_application.exception.EmployeeNotFoundException;
 import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.repo.EmployeeRepo;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +19,35 @@ public class EmployeeServiceImpli implements EmployeeService{
     @Autowired
     private EmployeeRepo employeeRepo;
 
+    @Autowired
+    private ModelMapper modelMapper;
 
-    @Override
-    public List<Employee> getEmployees() {
-       List<Employee> employees =  employeeRepo.findAll();
-        return  employees;
+
+//    @Override
+//    public List<Employee> getEmployees() {
+//       List<Employee> employees =  employeeRepo.findAll();
+//        return  employees;
+//    }
+
+    public EmployeeResponseDTO getEmployees()
+    {
+        List<Employee> employees =  employeeRepo.findAll();
+
+       List<EmployeeDTO> convertedEmployee =
+               employees.stream().map(e ->
+                       modelMapper.map(e, EmployeeDTO.class))
+                       .toList();
+
+       EmployeeResponseDTO erd = new EmployeeResponseDTO();
+       erd.setContent(convertedEmployee);
+
+       return erd;
+
+
     }
 
     @Override
-    public Employee getEmployeeById(Long employeeId) {
+    public EmployeeDTO getEmployeeById(Long employeeId) {
 
        Optional<Employee> emp =  employeeRepo.findById(employeeId);
        if(emp.isEmpty())
@@ -32,29 +55,39 @@ public class EmployeeServiceImpli implements EmployeeService{
            throw new EmployeeNotFoundException("Employee Not Found with ID"+ employeeId);
        }
        Employee realEmployee = emp.get();
-        return realEmployee;
+
+       EmployeeDTO empToReturn = modelMapper.map(realEmployee,EmployeeDTO.class);
+
+        return empToReturn;
     }
 
     @Override
-    public Employee getEmployeeByName(String employeeName) {
+    public EmployeeDTO getEmployeeByName(String employeeName) {
        Employee emp = employeeRepo.findByEmployeeName(employeeName);
-       return emp;
+       EmployeeDTO empToReturn = modelMapper.map(emp,EmployeeDTO.class);
+       return empToReturn;
     }
 
     @Override
-    public Employee getEmployeeByEmail(String email) {
+    public EmployeeDTO getEmployeeByEmail(String email) {
         Employee emp = employeeRepo.findByEmail(email);
-        return emp;
+        EmployeeDTO empToReturn = modelMapper.map(emp,EmployeeDTO.class);
+        return empToReturn;
     }
 
     @Override
-    public String addEmployee(Employee employee) {
-        employeeRepo.save(employee);
-        return "Employee added successfully!";
+    public EmployeeDTO addEmployee(EmployeeDTO employee) {
+
+        Employee emp = modelMapper.map(employee, Employee.class);
+
+        employeeRepo.save(emp);
+        Employee empToReturn = employeeRepo.findById(emp.getId()).orElseThrow(()-> new EmployeeNotFoundException("Employee not found after adding the employee into the database."));
+        EmployeeDTO employeeDTO = modelMapper.map(empToReturn, EmployeeDTO.class);
+        return employeeDTO;
     }
 
     @Override
-    public Employee deleteEmployeeById(Long empId) {
+    public EmployeeDTO deleteEmployeeById(Long empId) {
 
         Optional<Employee> emp = employeeRepo.findById(empId);
         if(emp.isEmpty())
@@ -65,13 +98,14 @@ public class EmployeeServiceImpli implements EmployeeService{
         employeeRepo.deleteById(empId);
 
         Employee empToReturn = emp.get();
+        EmployeeDTO employeeDTO = modelMapper.map(empToReturn,EmployeeDTO.class);
 
-        return empToReturn;
+        return employeeDTO;
     }
 
     @Override
-    public Employee updateEmployeeById(Long empId,  Employee newEmployee) {
-        Optional<Employee> oldEmpData = employeeRepo.findById(empId);
+    public EmployeeDTO updateEmployeeById(Long empId,  EmployeeDTO newEmployee) {
+        Optional<Employee> oldEmpData = employeeRepo.findById(empId); // old emp repo se nikala
         if(oldEmpData.isEmpty())
         {
             throw new EmployeeNotFoundException("Employee not found to update by id : "+ empId);
@@ -87,9 +121,9 @@ public class EmployeeServiceImpli implements EmployeeService{
         existingEmployee.setPanNumber(newEmployee.getPanNumber());
 
         employeeRepo.save(existingEmployee);
+        EmployeeDTO empToReturn = modelMapper.map(existingEmployee,EmployeeDTO.class);
 
 
-
-        return existingEmployee;
+        return empToReturn;
     }
 }
