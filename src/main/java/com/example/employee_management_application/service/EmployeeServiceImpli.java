@@ -7,6 +7,9 @@ import com.example.employee_management_application.models.Employee;
 import com.example.employee_management_application.repo.EmployeeRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,12 +32,13 @@ public class EmployeeServiceImpli implements EmployeeService{
 //        return  employees;
 //    }
 
-    public EmployeeResponseDTO getEmployees()
+    public EmployeeResponseDTO getEmployees(int pageNumber, int pageSize)
     {
-        List<Employee> employees =  employeeRepo.findAll();
+        Pageable pageDetails = PageRequest.of(pageNumber,pageSize);
+        Page<Employee> employeePage = employeeRepo.findAll(pageDetails);
 
        List<EmployeeDTO> convertedEmployee =
-               employees.stream().map(e ->
+               employeePage.stream().map(e ->
                        modelMapper.map(e, EmployeeDTO.class))
                        .toList();
 

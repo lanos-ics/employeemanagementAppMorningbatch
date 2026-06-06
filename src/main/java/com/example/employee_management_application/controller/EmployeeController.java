@@ -20,9 +20,12 @@ public class EmployeeController {
 
     // get employees :
     @GetMapping("api/v1/employee")
-    public ResponseEntity<EmployeeResponseDTO> getEmployees()
+    public ResponseEntity<EmployeeResponseDTO> getEmployees(
+          @RequestParam(name = "pn")  int pageNumber,
+          @RequestParam(name = "ps")  int pageSize
+    )
     {
-        EmployeeResponseDTO employees =  employeeService.getEmployees();
+        EmployeeResponseDTO employees =  employeeService.getEmployees(pageNumber, pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(employees);
     }
 

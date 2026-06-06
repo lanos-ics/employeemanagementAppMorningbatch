@@ -9,7 +9,7 @@ import java.util.List;
 public interface EmployeeService {
 
     // get all employees method :
-    public EmployeeResponseDTO getEmployees();
+    public EmployeeResponseDTO getEmployees(int pageNumber, int pageSize);
 
     // get 1 employee :
     public EmployeeDTO getEmployeeById(Long employeeId);
